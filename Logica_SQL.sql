@@ -36,7 +36,7 @@ apellido.
 
 select "first_name", "last_name"
 from "actor" a 
-where "last_name" = 'Allen';
+where "last_name" = 'ALLEN';
 
 /*7. Encuentra la cantidad total de películas en cada clasificación de la tabla
 “film” y muestra la clasificación junto con el recuento.
@@ -86,8 +86,134 @@ limit 1 offset 2;
 17’ ni ‘G’ en cuanto a su clasificación.
 */
 
+select "title", "rating"
+from "film" f 
+where "rating" not in ('NC-17', 'G');
+
+/* 13. Encuentra el promedio de duración de las películas para cada
+clasificación de la tabla film y muestra la clasificación junto con el
+promedio de duración.
+*/
+
+select "rating", 
+  AVG("length")
+from "film"
+group by "rating";
+
+/*14. Encuentra el título de todas las películas que tengan una duración mayor
+a 180 minutos.
+*/
+
+select "title", "length"
+from "film"
+where "length" > 180;
+
+/* 15. ¿Cuánto dinero ha generado en total la empresa?
+  */
+
+select sum("amount")
+from "payment";
 
 
+/* 16. Muestra los 10 clientes con mayor valor de id.
+*/
+
+select "customer_id",
+	concat("first_name", ' ', "last_name") as "nombre_cliente"
+from "customer" c 
+order by "customer_id" desc
+limit 10;
+
+
+/* 17. Encuentra el nombre y apellido de los actores que aparecen en la
+película con título ‘Egg Igby’.
+*/
+
+select a."first_name", a."last_name" 
+from "actor" a 
+join "film_actor" fa 
+	on a."actor_id" = fa."actor_id"
+join "film" f 
+	on fa."film_id" = f."film_id" 
+where "title" = 'EGG IGBY';
+
+
+/*18. Selecciona todos los nombres de las películas únicos.
+*/
+
+select distinct "title"
+from "film" f ;
+
+
+/*19. Encuentra el título de las películas que son comedias y tienen una
+duración mayor a 180 minutos en la tabla “film”.
+*/
+
+select f."title",
+	f."length",
+	c."name" 
+from "film" f 
+join "film_category" fc 
+	on f."film_id" = fc."film_id"
+join category c 
+	on fc.category_id = c.category_id
+where c."name" = 'Comedy' and f.length > 180; 
+
+
+/*20. Encuentra las categorías de películas que tienen un promedio de
+duración superior a 110 minutos y muestra el nombre de la categoría
+junto con el promedio de duración.
+*/
+
+select 	c."name" as "categoría",
+	AVG(f."length") as "duración_promedio"
+from "film" f 
+join "film_category" fc 
+	on f."film_id" = fc."film_id"
+join "category" c 
+	on fc."category_id" = c."category_id"
+group by c."name" 
+having avg(f."length") > 110;
+
+/*21. ¿Cuál es la media de duración del alquiler de las películas?
+*/
+
+select avg("return_date" - "rental_date") as "media_duración_alquiler"
+from "rental";
+
+/*22. Crea una columna con el nombre y apellidos de todos los actores y
+actrices.
+*/
+
+select concat("first_name", ' ', "last_name") as "nombre_actores"
+from "actor";
+
+/*23. Números de alquiler por día, ordenados por cantidad de alquiler de
+forma descendente.
+*/
+
+select count("rental_id") as "número_alquiler_día",
+	date("rental_date") 
+from "rental" r 
+group by date ("rental_date")
+order by "número_alquiler_día" desc;
+
+/*24. Encuentra las películas con una duración superior al promedio.
+  */
+
+select "title"
+from "film"
+where "length" > 
+	(select AVG("length")
+	from "film" f) ;
+
+/*25. Averigua el número de alquileres registrados por mes.
+  */
+
+select count("rental_id") as "número_alquiler_mes",
+	date_trunc('month', "rental_date") as mes
+from "rental" r 
+group by date_trunc('month', "rental_date");
 
 
 
