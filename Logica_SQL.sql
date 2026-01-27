@@ -215,6 +215,218 @@ select count("rental_id") as "número_alquiler_mes",
 from "rental" r 
 group by date_trunc('month', "rental_date");
 
+/*26. Encuentra el promedio, la desviación estándar y varianza del total
+pagado.
+*/
+
+select AVG("amount") as "promedio",
+	stddev("amount") as "desviacion_estandar",
+	variance("amount") as "varianza"
+from "payment" p;
 
 
+/*27. ¿Qué películas se alquilan por encima del precio medio?
+  */
 
+select "title"
+from "film"
+where "rental_rate" > 
+	(select AVG("rental_rate")
+	from "film" f) ;
+
+/*28. Muestra el id de los actores que hayan participado en más de 40
+películas.
+*/
+
+select "actor_id"
+from "film_actor"
+group by "actor_id"
+having count("actor_id") > 40;
+
+
+/*29. Obtener todas las películas y, si están disponibles en el inventario,
+mostrar la cantidad disponible.
+*/
+
+select f."title",
+	count()
+from "film" f
+left join "inventory" i
+	on f.film_id =i.film_id 
+group by f."title"
+having count()
+
+/*30. Obtener los actores y el número de películas en las que ha actuado.
+  */
+
+select concat(a."first_name", ' ', a."last_name" ) as "nombre_actor",
+	count(fa."actor_id") as "número_películas"
+from "film_actor" fa 
+inner join "actor" a 
+	on fa."actor_id" = a."actor_id"
+group by "nombre_actor";
+
+/*31. Obtener todas las películas y mostrar los actores que han actuado en
+ellas, incluso si algunas películas no tienen actores asociados.
+*/
+
+select f."title",
+	concat(a."first_name", ' ', a."last_name" ) as "nombre_actor"
+from "film" f
+left join "film_actor" fa
+	on f.film_id = fa.film_id
+inner join "actor" a
+	on fa.actor_id = a.actor_id
+order by f."title";
+
+
+/*32. Obtener todos los actores y mostrar las películas en las que han
+actuado, incluso si algunos actores no han actuado en ninguna película.
+*/
+
+select f."title",
+	concat(a."first_name", ' ', a."last_name" ) as "nombre_actor"
+from "film" f
+right join "film_actor" fa
+	on f.film_id = fa.film_id
+inner join "actor" a
+	on fa.actor_id = a.actor_id
+order by "nombre_actor";
+
+/*33. Obtener todas las películas que tenemos y todos los registros de
+alquiler.
+*/
+
+select f."title",
+	r."rental_date"
+from "film" f 
+inner join "inventory" i 
+	on f."film_id" = i."film_id" 
+inner join "rental" r
+	on i.inventory_id = r.inventory_id
+order by f.title ;
+
+/*34. Encuentra los 5 clientes que más dinero se hayan gastado con nosotros.
+  */
+
+select concat(c."first_name", ' ', c."last_name" ) as "nombre_cliente",
+	sum (p."amount")
+from customer c
+inner join rental r
+	on r.customer_id = c.customer_id 
+inner join payment p 
+	on r.customer_id = p.customer_id 
+group by c."customer_id"
+order by sum(p."amount") desc
+limit 5;
+
+/*35. Selecciona todos los actores cuyo primer nombre es 'Johnny'.
+*/
+
+select "first_name", "last_name"
+from "actor" a 
+where "first_name" = 'JOHNNY';
+
+/*36. Renombra la columna “first_name” como Nombre y “last_name” como
+Apellido.
+*/
+
+select "first_name" as "nombre", "last_name" as "apellido"
+from "actor" a;
+
+/* 37. Encuentra el ID del actor más bajo y más alto en la tabla actor.
+  */
+
+select MIN("actor_id"), MAX("actor_id") 
+from "actor";
+
+/*38. Cuenta cuántos actores hay en la tabla “actor”.
+  */
+
+select count("actor_id") as "número_actores"
+from "actor";
+
+/*39. Selecciona todos los actores y ordénalos por apellido en orden
+ascendente.
+*/
+
+select "first_name", "last_name"
+from "actor"
+order by "last_name" asc;
+
+/* 40. Selecciona las primeras 5 películas de la tabla “film”.
+  */
+
+select "title"
+from "film"
+limit 5;
+
+/*41. Agrupa los actores por su nombre y cuenta cuántos actores tienen el
+mismo nombre. ¿Cuál es el nombre más repetido?
+*/
+
+select "first_name",
+	count("first_name")
+from "actor"
+group by "first_name"
+order by count("first_name") desc;
+
+-- Respuesta: Kenneth, Penelope y Julia.
+
+/*42. Encuentra todos los alquileres y los nombres de los clientes que los
+realizaron.
+*/
+
+select r."rental_id",
+	concat(c."first_name", ' ', c."last_name" ) as "nombre_cliente"
+from customer c
+inner join rental r
+	on r.customer_id = c.customer_id;
+
+/*43. Muestra todos los clientes y sus alquileres si existen, incluyendo
+aquellos que no tienen alquileres.
+*/
+
+select 	concat(c."first_name", ' ', c."last_name" ) as "nombre_cliente",
+	r."rental_id"
+from "customer" c
+left join "rental" r
+	on r."customer_id" = c."customer_id"
+order by "nombre_cliente" ;
+
+/*44. Realiza un CROSS JOIN entre las tablas film y category. ¿Aporta valor
+esta consulta? ¿Por qué? Deja después de la consulta la contestación.
+*/
+
+select *
+from "film" f
+cross join "category" c ;
+
+-- Respuesta: No nos aporta valor porque no nos da datos reales sobre las películas, solo posibilidades.
+
+/*45. Encuentra los actores que han participado en películas de la categoría
+'Action'.
+*/
+
+select concat(a."first_name", ' ', a."last_name" ) as "nombre_actor"
+from "actor" a 
+inner join "film_actor" fa 
+	on a."actor_id" = fa."actor_id" 
+inner join "film" f 
+	on fa."film_id" = f."film_id" 
+inner join film_category fc 
+	on f.film_id = fc.film_id
+inner join category c 
+	on fc.category_id = c.category_id 
+where c."name" = 'Action';
+
+/*46. Encuentra todos los actores que no han participado en películas.
+*/
+
+select concat(a."first_name", ' ', a."last_name" ) as "nombre_actor"
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id 
+inner join "film" f 
+	on fa."film_id" = f."film_id"
+where f."title" = 'NULL';
