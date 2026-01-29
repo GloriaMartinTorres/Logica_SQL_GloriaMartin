@@ -88,42 +88,58 @@ Utilizamos INNER JOIN para unir todas las tablas desde "actor" a "category" y fi
 Utilizamos LEFT JOIN para obtener todos los nombres de la tabla "actor" y unir con "film_actor". Usamos INNER JOIN para unir "film_actor" con "film" para poder filtrar por títulos de película con WHERE.
 El resultado aparece en blanco porque todos los actores han participado en alquna película.
 
-47. Selecciona el nombre de los actores y la cantidad de películas en las
-que han participado.
-48. Crea una vista llamada “actor_num_peliculas” que muestre los nombres
-de los actores y el número de películas en las que han participado.
+47. Selecciona el nombre de los actores y la cantidad de películas en las que han participado.
+Unimos las tablas Actor y Film_actor mediante un INNER JOIN. Agrupamos con GROUP BY por el nombre de los actores y usamos COUNT con el id de las películas.
+
+48. Crea una vista llamada “actor_num_peliculas” que muestre los nombres de los actores y el número de películas en las que han participado.
+Utilizamos CREATE VIEW actor_num_peliculas AS con la búsqueda anterior.
+
 49. Calcula el número total de alquileres realizados por cada cliente.
+Unimos las tablas Customer y Rental mediante un INNER JOIN. Agrupamos con GROUP BY por el nombre de los clientes y usamos COUNT con el id de los alquileres.
+
 50. Calcula la duración total de las películas en la categoría 'Action'.
-51. Crea una tabla temporal llamada “cliente_rentas_temporal” para
-almacenar el total de alquileres por cliente.
-52. Crea una tabla temporal llamada “peliculas_alquiladas” que almacene las
-películas que han sido alquiladas al menos 10 veces.
-53. Encuentra el título de las películas que han sido alquiladas por el cliente
-con el nombre ‘Tammy Sanders’ y que aún no se han devuelto. Ordena
-los resultados alfabéticamente por título de película.
-54. Encuentra los nombres de los actores que han actuado en al menos una
-película que pertenece a la categoría ‘Sci-Fi’. Ordena los resultados
-alfabéticamente por apellido.
-55. Encuentra el nombre y apellido de los actores que han actuado en
-películas que se alquilaron después de que la película ‘Spartacus
-Cheaper’ se alquilara por primera vez. Ordena los resultados
-alfabéticamente por apellido.
-56. Encuentra el nombre y apellido de los actores que no han actuado en
-ninguna película de la categoría ‘Music’.
-57. Encuentra el título de todas las películas que fueron alquiladas por más
-de 8 días.
-58. Encuentra el título de todas las películas que son de la misma categoría
-que ‘Animation’.
-59. Encuentra los nombres de las películas que tienen la misma duración
-que la película con el título ‘Dancing Fever’. Ordena los resultados
-alfabéticamente por título de película.
-60. Encuentra los nombres de los clientes que han alquilado al menos 7
-películas distintas. Ordena los resultados alfabéticamente por apellido.
-61. Encuentra la cantidad total de películas alquiladas por categoría y
-muestra el nombre de la categoría junto con el recuento de alquileres.
+Unimos las tablas Film y Film_category con un inner join, y luego unimos Film_category y Category con INNER JOIN. Utilizamos WHERE para filtrar por género y SUM para sumar las duración.
+
+51. Crea una tabla temporal llamada “cliente_rentas_temporal” para almacenar el total de alquileres por cliente.
+Utilizamos CREATE TEMPORARY TABLE cliente_rentas_temporal AS con la búsqueda del ejercicio 49.
+
+52. Crea una tabla temporal llamada “peliculas_alquiladas” que almacene las películas que han sido alquiladas al menos 10 veces.
+Usamos dos INNER JOIN para unir las tablas Film, Inventory y Rental. Agrupamos con gROUP BY por título de película y filtramos con HAVING COUNT > 10 usando el rental id. Creamos la tabla con CREATE TEMPORARY TABLE.
+
+53. Encuentra el título de las películas que han sido alquiladas por el cliente con el nombre ‘Tammy Sanders’ y que aún no se han devuelto. Ordena los resultados alfabéticamente por título de película.
+Unimos mediante INNER JOIN las tablas Customer, Rental, Inventory y Film. Filtramos usando WHERE con el nombre y la fecha de devolución. Ordenamos los resultados con ORDER BY.
+
+54. Encuentra los nombres de los actores que han actuado en al menos una película que pertenece a la categoría ‘Sci-Fi’. Ordena los resultados alfabéticamente por apellido.
+Unimos con JOIN las tablas Actor, Film_actor, Film, Film-category y Category. Filtramos con WHERE para quedarnos solo con las películas de la categoría Sci-Fi. Ordenamos con ORDER BY.
+
+55. Encuentra el nombre y apellido de los actores que han actuado en películas que se alquilaron después de que la película ‘Spartacus Cheaper’ se alquilara por primera vez. Ordena los resultados alfabéticamente por apellido.
+--> Por hacer
+
+56. Encuentra el nombre y apellido de los actores que no han actuado en ninguna película de la categoría ‘Music’.
+Unimos con JOIN las tablas Actor, Film_actor, Film, Film-category y Category. Filtramos con WHERE <> para excluir las películas del género Music. Además, he usado GROUP BY para agrupar por el nombre de los actores y evitar que se repitan.
+
+57. Encuentra el título de todas las películas que fueron alquiladas por más de 8 días.
+--> Por hacer
+
+
+58. Encuentra el título de todas las películas que son de la misma categoría que ‘Animation’.
+Unimos las tablas Film y Film_category con un INNER JOIN, y luego unimos Film_category y Category con INNER JOIN. Utilizamos WHERE para filtrar por género.
+
+
+59. Encuentra los nombres de las películas que tienen la misma duración que la película con el título ‘Dancing Fever’. Ordena los resultados alfabéticamente por título de película.
+Hacemos una subconsulta en el WHERE para saber la duración de la película Dancing Fever y encontrar aquellas películas que duren lo mismo. Ordenamos usando ORDER BY.
+
+60. Encuentra los nombres de los clientes que han alquilado al menos 7 películas distintas. Ordena los resultados alfabéticamente por apellido.
+Usamos INNER JOIN para unir las tablas Customer e Inventory. Agrupamos con GROUP BY con el customer id y filtramos usando HAVING COUNT > 7 con el film id. Ordenamos usando ORDER BY por el apellido dfe los clientes.
+
+61. Encuentra la cantidad total de películas alquiladas por categoría y muestra el nombre de la categoría junto con el recuento de alquileres.
+Usamos JOIN para unir las tablas desde Rental hasta Category. Agrupamos con GROUP BY por el nombre de la categoría. Contamos la cantidad de películas alquiladas con COUNT y el rental id.
+
 62. Encuentra el número de películas por categoría estrenadas en 2006.
-63. Obtén todas las combinaciones posibles de trabajadores con las tiendas
-que tenemos.
-64. Encuentra la cantidad total de películas alquiladas por cada cliente y
-muestra el ID del cliente, su nombre y apellido junto con la cantidad de
-películas alquiladas.
+Usamos INNER JOIN para unir las tablas Film, Film category y Category. Filtramos por año con WHERE. Agrupamos por nombre de categoría con GROUP BY.
+
+63. Obtén todas las combinaciones posibles de trabajadores con las tiendas que tenemos.
+Utilizamos CROSS JOIN con las tablas Staff y Store.
+
+64. Encuentra la cantidad total de películas alquiladas por cada cliente y muestra el ID del cliente, su nombre y apellido junto con la cantidad de películas alquiladas.
+Usamos INNER JOIN para unir las tablas Customer y Rental. Agrupamos con GROUP BY por customer id. Contamos el total de películas alquiladas con COUNT y el rental id.
