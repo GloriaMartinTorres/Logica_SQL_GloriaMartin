@@ -8,35 +8,93 @@ Pasos:
 4. Crear el esquema de relación de entidades y familizarizarse con el contenido.
 5. Crear el script donde se realizarán las consultas.
 
-Ejercicio 2: utilizamos WHERE = para seleccionar la clasificación 'R'.
-Ejercicio 3: utilizamos WHERE junto a BETWEEN para establecer un rango en el "actor_id".
-Ejercicio 4: los resultados salen vacíos porque, si vemos la tabla con la información de las películas, los valores de idioma original aparecen como NULL.
-Ejercicio 5: utilizamos ORDER BY para ordenar las películas por duración añadiendo asc para que lo haga de forma ascendente.
-Ejercicio 6: utilizamos WHERE para buscar el apellido 'Allen'. 
-Ejercicio 7: utilizamos GROUP BY para agrupar por los valores de clasificación y count para calcular el total en cada clasificación. Asignamos un alias al total.
-8: utilizamos WHERE junto a OR para filtrar por las dos opciones.
-9: utilizamos la función VARIANCE para obtener la variabilidad de lo que costaría reemplazar las películas.
-10: utilizamos las funciones MAX y MIN para obtener la mayor y menor duración de las películas.
-11: utilizamos JOIN para unir las tablas "payment" y "rental". Usamos ORDER BY junto con DESC para ordenar por fecha de alquiler. Con OFFSET omitimos los dos primeros resultados y con LIMIT nos quedamos solo con el dato que nos interesa. Al haber 182 películas alquiladas al mismo tiempo, puede haber un problema al momento de decidir con cuál se queda.
-12: utilizamos WHERE junto a NOT IN para descartar las clasificaciones que no nos interesan.
-13: utilizamos la función AVG para calcular el promedio de la duración y agrupamos por clasificación con GROUP BY.
-14: utilizamos WHERE > para filtrar las películas con una duración mayor.
-15: utilizamos la función SUM para calcular el total ganado.
-16: utilizamos ORDER BY para ordenar los id de forma descendente y nos quedamos con los 10 primeros usando LIMIT.
-17: utilizamos la función DISTINCT para que nos devuelva los valores únicos.
-18: utilizamos JOIN para poder filtrar por categoría. Utilizamos WHERE AND para filtrar por dos valores, categoría y duración.
-19: utilizamos JOIN para poder filtrar por categoría. Utilizamos GROUP BY para agrupar por categoría y HAVING AVG > para calcular el promedio y filtrar aquellas superiores a 110 minutos.
-20: utilizamos JOIN para sacar información de distintas tablas. Agrupamos usando GROUP BY y filtramos con HAVING >. Calculamos el promedio con AVG.
-21: utilizamos AVG para calcular la media y restamos la fecha de alquiler a la fecha de devolución para calcular la duración de alquiler.
-22: utilizamos CONCAT para unir el nombre y el apellido en un único valor.
-23: utilizamos GROUP BY DATE para agrupar por fecha sin tener en cuenta la hora. Para saber el número de películas alquiladas, usamos COUNT con el id de alquiler. Finalmente ordenamos usamos ORDER BY DESC.
-24: utilizamos una subconsulta en WHERE para calcular la duración promedio y filtramos quedándonos con aquellas que duran más.
-25: utilizamos DATE_TRUNC('MONTH') junto  GROUP BY para agrupar por mes. Para saber el número de películas alquiladas, usamos COUNT con el id de alquiler.
-26: utilizamos las funciones de agregación AVG, STDDEV y VARIANCE.
-27: utilizamos una subconsulta en WHERE para calcular el precio promedio y filtramos quedándonos con un precio mayor.
-28: utilizamos GROUP BY para agrupar por el id del actor y HAVING COUNT > para contar las veces que aparece y quedarnos con aquellas que estén más de 40 veces.
-29 - POR HACER
-30: utilizamos INNER JOIN para unir las tablas "film_actor" y "actor" para poder saber el número de películas en el que ha aparecido cada actor y su nombre. Usamos GROUP BY para agrupar por el nombre del actor y COUNT para contar el número de películas en las que ha aparecido.
+Ejercicios:
+2. Muestra los nombres de todas las películas con una clasificación por edades de ‘R’.
+Utilizamos WHERE = para seleccionar la clasificación 'R'.
+
+3. Encuentra los nombres de los actores que tengan un “actor_id” entre 30 y 40.
+Utilizamos WHERE junto a BETWEEN para establecer un rango en el "actor_id".
+
+4. Obtén las películas cuyo idioma coincide con el idioma original.
+Los resultados salen vacíos porque, si vemos la tabla con la información de las películas, los valores de idioma original aparecen como NULL.
+
+5. Ordena las películas por duración de forma ascendente.
+Uutilizamos ORDER BY para ordenar las películas por duración añadiendo asc para que lo haga de forma ascendente.
+
+6. Encuentra el nombre y apellido de los actores que tengan ‘Allen’ en su apellido.
+Utilizamos WHERE para buscar el apellido 'Allen'. 
+
+7. Encuentra la cantidad total de películas en cada clasificación de la tabla “film” y muestra la clasificación junto con el recuento.
+Utilizamos GROUP BY para agrupar por los valores de clasificación y count para calcular el total en cada clasificación. Asignamos un alias al total.
+
+8. Encuentra el título de todas las películas que son ‘PG-13’ o tienen una duración mayor a 3 horas en la tabla film.
+Utilizamos WHERE junto a OR para filtrar por las dos opciones.
+
+9. Encuentra la variabilidad de lo que costaría reemplazar las películas.
+Utilizamos la función VARIANCE para obtener la variabilidad de lo que costaría reemplazar las películas.
+
+10. Encuentra la mayor y menor duración de una película de nuestra BBDD.
+Utilizamos las funciones MAX y MIN para obtener la mayor y menor duración de las películas.
+
+11. Encuentra lo que costó el antepenúltimo alquiler ordenado por día.
+Utilizamos JOIN para unir las tablas "payment" y "rental". Usamos ORDER BY junto con DESC para ordenar por fecha de alquiler. Con OFFSET omitimos los dos primeros resultados y con LIMIT nos quedamos solo con el dato que nos interesa. Al haber 182 películas alquiladas al mismo tiempo, puede haber un problema al momento de decidir con cuál se queda.
+
+12. Encuentra el título de las películas en la tabla “film” que no sean ni ‘NC-17’ ni ‘G’ en cuanto a su clasificación.
+Utilizamos WHERE junto a NOT IN para descartar las clasificaciones que no nos interesan.
+
+13. Encuentra el promedio de duración de las películas para cada clasificación de la tabla film y muestra la clasificación junto con el promedio de duración.
+Utilizamos la función AVG para calcular el promedio de la duración y agrupamos por clasificación con GROUP BY.
+
+14. Encuentra el título de todas las películas que tengan una duración mayor a 180 minutos.
+Utilizamos WHERE > para filtrar las películas con una duración mayor.
+
+15. ¿Cuánto dinero ha generado en total la empresa?
+Utilizamos la función SUM para calcular el total ganado.
+
+16. Muestra los 10 clientes con mayor valor de id.
+Utilizamos ORDER BY para ordenar los id de forma descendente y nos quedamos con los 10 primeros usando LIMIT.
+
+17. Encuentra el nombre y apellido de los actores que aparecen en la película con título ‘Egg Igby’.
+Unimos mediante un INNER JOIN las tablas Actor y Film. Filtramos con WHERE.
+
+18. Selecciona todos los nombres de las películas únicos.
+Utilizamos la función DISTINCT para que nos devuelva los valores únicos.
+
+19. Encuentra el título de las películas que son comedias y tienen una duración mayor a 180 minutos en la tabla “film”.
+Utilizamos JOIN para poder filtrar por categoría. Utilizamos WHERE AND para filtrar por dos valores, categoría y duración.
+
+20. Encuentra las categorías de películas que tienen un promedio de duración superior a 110 minutos y muestra el nombre de la categoría junto con el promedio de duración.
+Utilizamos JOIN para poder filtrar por categoría. Utilizamos GROUP BY para agrupar por categoría y HAVING AVG > para calcular el promedio y filtrar aquellas superiores a 110 minutos.
+
+21. ¿Cuál es la media de duración del alquiler de las películas?
+Utilizamos AVG para calcular la media y restamos la fecha de alquiler a la fecha de devolución para calcular la duración de alquiler.
+
+22. Crea una columna con el nombre y apellidos de todos los actores y actrices.
+Utilizamos CONCAT para unir el nombre y el apellido en un único valor.
+
+23. Números de alquiler por día, ordenados por cantidad de alquiler de forma descendente.
+Utilizamos GROUP BY DATE para agrupar por fecha sin tener en cuenta la hora. Para saber el número de películas alquiladas, usamos COUNT con el id de alquiler. Finalmente ordenamos usamos ORDER BY DESC.
+
+24. Encuentra las películas con una duración superior al promedio.
+Utilizamos una subconsulta en WHERE para calcular la duración promedio y filtramos quedándonos con aquellas que duran más.
+
+25. Averigua el número de alquileres registrados por mes.
+Utilizamos DATE_TRUNC('MONTH') junto  GROUP BY para agrupar por mes. Para saber el número de películas alquiladas, usamos COUNT con el id de alquiler.
+
+26. Encuentra el promedio, la desviación estándar y varianza del total pagado.
+Utilizamos las funciones de agregación AVG, STDDEV y VARIANCE.
+
+27. ¿Qué películas se alquilan por encima del precio medio?
+Utilizamos una subconsulta en WHERE para calcular el precio promedio y filtramos quedándonos con un precio mayor.
+
+28. Muestra el id de los actores que hayan participado en más de 40 películas.
+Utilizamos GROUP BY para agrupar por el id del actor y HAVING COUNT > para contar las veces que aparece y quedarnos con aquellas que estén más de 40 veces.
+
+29. Obtener todas las películas y, si están disponibles en el inventario, mostrar la cantidad disponible.
+Unimos las tablas Film e Inventory con un left join. Usamos COUNT para saber el número de copias de cada película en el inventario- Agrupamos las películas con GROUP BY.
+
+30. Obtener los actores y el número de películas en las que ha actuado.
+Utilizamos INNER JOIN para unir las tablas "film_actor" y "actor" para poder saber el número de películas en el que ha aparecido cada actor y su nombre. Usamos GROUP BY para agrupar por el nombre del actor y COUNT para contar el número de películas en las que ha aparecido.
 
 31. Obtener todas las películas y mostrar los actores que han actuado en ellas, incluso si algunas películas no tienen actores asociados.
 Utilizamos LEFT JOIN poniendo a la izquierda la tabla "film" para poder sacar de esta todos los datos de las películas e INNER JOIN entre "film_actor" y "actor" para obtener los datos de los actores. He utilizado ORDER BY con la columna "title" para ver todos los actores que hay en cada película más fácilmente.
@@ -113,13 +171,13 @@ Unimos mediante INNER JOIN las tablas Customer, Rental, Inventory y Film. Filtra
 Unimos con JOIN las tablas Actor, Film_actor, Film, Film-category y Category. Filtramos con WHERE para quedarnos solo con las películas de la categoría Sci-Fi. Ordenamos con ORDER BY.
 
 55. Encuentra el nombre y apellido de los actores que han actuado en películas que se alquilaron después de que la película ‘Spartacus Cheaper’ se alquilara por primera vez. Ordena los resultados alfabéticamente por apellido.
---> Por hacer
+Unimos las tablas Film-actor, Film, Inventory y Rental con un inner join. Usamos una subconsulta en where para filtrar la primera fecha de alquiler de 'Spartacus Cheaper'. Agrupamos por el ID del actor con group by y ordenamos por apellido con order by.
 
 56. Encuentra el nombre y apellido de los actores que no han actuado en ninguna película de la categoría ‘Music’.
 Unimos con JOIN las tablas Actor, Film_actor, Film, Film-category y Category. Filtramos con WHERE <> para excluir las películas del género Music. Además, he usado GROUP BY para agrupar por el nombre de los actores y evitar que se repitan.
 
 57. Encuentra el título de todas las películas que fueron alquiladas por más de 8 días.
---> Por hacer
+Conectamos las tablas Film, Inventory y Rental con un join. Calculamos los días de duración del alquiler con (r.return_date - r.rental_date). > interval '8 days' filtra los alquileres mayores a 8 días. Distinct evita títulos duplicados.
 
 
 58. Encuentra el título de todas las películas que son de la misma categoría que ‘Animation’.

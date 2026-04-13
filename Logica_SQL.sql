@@ -131,9 +131,9 @@ película con título ‘Egg Igby’.
 
 select a."first_name", a."last_name" 
 from "actor" a 
-join "film_actor" fa 
+inner join "film_actor" fa 
 	on a."actor_id" = fa."actor_id"
-join "film" f 
+inner join "film" f 
 	on fa."film_id" = f."film_id" 
 where "title" = 'EGG IGBY';
 
@@ -248,13 +248,14 @@ having count("actor_id") > 40;
 mostrar la cantidad disponible.
 */
 
-select f."title",
-	count()
-from "film" f
-left join "inventory" i
-	on f.film_id =i.film_id 
-group by f."title"
-having count()
+SELECT 
+    f.title,
+    COUNT(i.inventory_id) AS cantidad_disponible
+FROM film f
+LEFT JOIN inventory i 
+    ON f.film_id = i.film_id
+GROUP BY f.film_id, f.title
+ORDER BY f.title;
 
 /*30. Obtener los actores y el número de películas en las que ha actuado.
   */
@@ -543,7 +544,28 @@ Cheaper’ se alquilara por primera vez. Ordena los resultados
 alfabéticamente por apellido.
 */
 
--- POR HACER
+select concat(a."first_name", ' ', a."last_name") as nombre_actor
+from actor a
+inner join film_actor fa 
+on a.actor_id = fa.actor_id 
+inner join film f
+	on fa.film_id = f.film_id 
+inner join inventory i
+	on i.film_id = f.film_id
+inner join rental r
+	on r.inventory_id = i.inventory_id
+where r.rental_date > (
+		select r."rental_date"
+		from rental r 
+		inner join inventory i 
+			on r.inventory_id = i.inventory_id 
+		inner join film f 
+			on i.film_id =f.film_id 
+		where f.title = 'SPARTACUS CHEAPER'
+		order by r.rental_date desc
+		limit 1)
+group by a."actor_id"
+order by a.last_name;
 
 /*56. Encuentra el nombre y apellido de los actores que no han actuado en
 ninguna película de la categoría ‘Music’.
@@ -566,16 +588,13 @@ group by "nombre_actor" ;
 de 8 días.
 */
 
--- POR HACER
-
-select f."title" 
+select distinct f."title" 
 from "film" f
-inner join "inventory" i
+join "inventory" i
 	on f.film_id = i.film_id 
-inner join "rental" r
+join "rental" r
 	on i.inventory_id = r.inventory_id 
-group by f.title 
-having (r."return_date" - r."rental_date") > 8;
+where (r."return_date" - r."rental_date") > interval '8 days';
 
 
 /*58. Encuentra el título de todas las películas que son de la misma categoría
